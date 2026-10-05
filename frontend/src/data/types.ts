@@ -5,6 +5,8 @@ export type EntryRow = {
   status: string
   pending: boolean
   abnormal: boolean
+  // 泵组检修的「历史版本」是数组，作为例外字段在 service 里用 unknown 读取，
+  // 这里保持标量联合，避免递归类型让其它模块页面的推断过深。
   [field: string]: string | number | boolean
 }
 
