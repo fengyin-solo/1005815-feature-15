@@ -30,6 +30,10 @@ export function listEntries(key: string, filters: Record<string, string> = {}): 
 
 export function runAction(key: string, id: number, action: string): ActionResult {
   const meta = moduleMeta(key)
+  // 泵组检修有按类别期限口径与单向流转约束，统一走 pumpmaint-service，不走通用动作。
+  if (key === 'pumpmaint') {
+    return { ok: false, message: '泵组检修请通过专用的开工/完工操作提交，通用流转入口已停用' }
+  }
   const target = meta.actionTargets[action]
   if (!target) {
     return { ok: false, message: `${meta.entity}没有登记「${action}」这个动作` }
